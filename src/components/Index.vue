@@ -9,7 +9,7 @@
       <a href="#" @click.prevent="next('practice')">
         {{ this.log ? 'Continue' : 'Start' }} Practice
       </a>
-      <a href="#" @click.prevent="next('performance')">View Perfomance</a>
+      <!-- <a href="#" @click.prevent="next('performance')">View Perfomance</a> -->
     </div>
   </div>
 </template>
