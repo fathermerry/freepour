@@ -2,11 +2,11 @@
   <div class="app" id="app">
     <div class="pattern pattern-on-top"></div>
     <div class="pattern pattern-at-bottom"></div>
-    <index v-if="state === 'index'" @changeState="changeState" />
+    <index v-if="state === 'index'" @next="changeState" />
     <div v-else>
       <nav :state="state" />
-      <practice v-if="state === 'practice'" @changeState="changeState" />
-      <performance v-if="state === 'performance'" @changeState="changeState" />
+      <practice v-if="state === 'practice'" @back="changeState('index')" />
+      <performance v-if="state === 'performance'" @back="changeState('index')" />
     </div>
   </div>
 </template>
