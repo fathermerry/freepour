@@ -1,42 +1,20 @@
 <template>
   <div class="practice">
-    <div class="practice-column" id="left">
+    <div class="practice-column" v-for="(hand, index) in hands" :key="index">
       <div class="header">
-        <div class="header-title">LEFT <br> HAND</div>
-        <div class="header-pool">{{ log.left.pool }}</div>
+        <div class="header-title">{{ hand }} <br> HAND</div>
+        <div class="header-pool">{{ log[hand].pool }}</div>
       </div>
       <div class="counts">
-        <a class="count" @click="record('left', 'overpoured')">
-          <div class="count-title">Over Poured</div>
-          <div class="count-amount">{{ log.left.counts.overpoured }}</div>
-        </a>
-        <a class="count" @click="record('left', 'underpoured')">
-          <div class="count-title">Under Poured</div>
-          <div class="count-amount">{{ log.left.counts.underpoured }}</div>
-        </a>
-        <a class="count" @click="record('left', 'correctpour')">
-          <div class="count-title">Correct Pour</div>
-          <div class="count-amount">{{ log.left.counts.correctpour }}</div>
-        </a>
-      </div>
-    </div>
-    <div class="practice-column" id="right">
-      <div class="header">
-        <div class="header-title">RIGHT <br> HAND</div>
-        <div class="header-pool">{{ log.right.pool }}</div>
-      </div>
-      <div class="counts">
-        <a class="count" @click="record('right', 'overpoured')">
-          <div class="count-title">Over Poured</div>
-          <div class="count-amount">{{ log.right.counts.overpoured }}</div>
-        </a>
-        <a class="count" @click="record('right', 'underpoured')">
-          <div class="count-title">Under Poured</div>
-          <div class="count-amount">{{ log.right.counts.underpoured }}</div>
-        </a>
-        <a class="count" @click="record('right', 'correctpour')">
-          <div class="count-title">Correct Pour</div>
-          <div class="count-amount">{{ log.right.counts.correctpour }}</div>
+        <a
+          class="count"
+          v-for="(pour, index) in pours"
+          :key="index"
+          :class="{'is-highest': isMost(hand, pour)}"
+          @click="record(hand, pour)"
+        >
+          <div class="count-title">{{ title(pour) }}</div>
+          <div class="count-amount">{{ log[hand].counts[pour] }}</div>
         </a>
       </div>
     </div>
@@ -69,17 +47,43 @@ export default {
     };
 
     return {
+      hands: ['left', 'right'],
+      pours: ['overpoured', 'underpoured', 'correctpour'],
       today,
       log,
     };
   },
   methods: {
+    title(pour) {
+      switch (pour) {
+        case 'overpoured':
+          return 'Over Poured';
+        case 'underpoured':
+          return 'Under Poured';
+        case 'correctpour':
+          return 'Correct Pour';
+        default:
+      }
+      return '';
+    },
     record(hand, type) {
       if (!this.log[hand].pool) return;
       this.log[hand].pool -= 1;
       this.log[hand].counts[type] += 1;
       this.log.tries += 1;
       localStorage.setItem(this.today, JSON.stringify(this.log));
+    },
+    isMost(hand, type) {
+      let highestCount = 0;
+      let highestVariable;
+      const keys = Object.keys(this.log[hand].counts);
+      keys.forEach((key) => {
+        if (this.log[hand].counts[key] > highestCount) {
+          highestCount = this.log[hand].counts[key];
+          highestVariable = key;
+        }
+      });
+      return highestVariable === type;
     },
   },
 };
@@ -114,6 +118,7 @@ export default {
     font-size: 18px;
     letter-spacing: 0.01em;
     color: #F9ECDB;
+    text-transform: uppercase;
   }
   &-pool {
     font-weight: 500;
@@ -148,6 +153,9 @@ export default {
     font-size: 36px;
     letter-spacing: 0.01em;
     color: #D2C1A9;
+    .is-highest & {
+      color: black;
+    }
   }
 }
 </style>
