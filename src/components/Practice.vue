@@ -10,7 +10,7 @@
           class="count"
           v-for="(pour, index) in pours"
           :key="index"
-          :class="{'is-highest': isMost(hand, pour)}"
+          :class="{'is-highest': isBest(hand, pour)}"
           @click="record(hand, pour)"
         >
           <div class="count-title">{{ title(pour) }}</div>
@@ -66,24 +66,26 @@ export default {
       }
       return '';
     },
-    record(hand, type) {
+    record(hand, pour) {
       if (!this.log[hand].pool) return;
       this.log[hand].pool -= 1;
-      this.log[hand].counts[type] += 1;
+      this.log[hand].counts[pour] += 1;
       this.log.tries += 1;
       localStorage.setItem(this.today, JSON.stringify(this.log));
     },
-    isMost(hand, type) {
-      let highestCount = 0;
-      let highestVariable;
-      const keys = Object.keys(this.log[hand].counts);
-      keys.forEach((key) => {
-        if (this.log[hand].counts[key] > highestCount) {
-          highestCount = this.log[hand].counts[key];
-          highestVariable = key;
+    isBest(hand, pour) {
+      let highestPourCount = 0;
+      let bestPour;
+
+      const pours = Object.keys(this.log[hand].counts);
+      pours.forEach((key) => {
+        const pourCount = this.log[hand].counts[key];
+        if (pourCount > highestPourCount) {
+          highestPourCount = pourCount;
+          bestPour = key;
         }
       });
-      return highestVariable === type;
+      return bestPour === pour;
     },
   },
 };
