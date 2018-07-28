@@ -3,11 +3,11 @@
     <div class="pattern pattern-on-top"></div>
     <div class="pattern pattern-at-bottom"></div>
     <transition name="fade">
-      <index v-if="state === 'index'" @next="changeState" />
+      <index v-if="page === 'index'" @next="toPage" />
       <div class="content" v-else>
-        <navigation :state="state" @back="changeState('index')" />
-        <practice v-if="state === 'practice'" />
-        <performance v-if="state === 'performance'" />
+        <navigation :page="page" @back="toPage('index')" />
+        <practice v-if="page === 'practice'" />
+        <performance v-if="page === 'performance'" />
       </div>
     </transition>
   </div>
@@ -29,12 +29,12 @@ export default {
   },
   data() {
     return {
-      state: 'index',
+      page: 'index',
     };
   },
   methods: {
-    changeState(state) {
-      this.state = state;
+    toPage(page) {
+      this.page = page;
     },
   },
 };

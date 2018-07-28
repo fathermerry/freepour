@@ -7,7 +7,7 @@
     </div>
     <div class="title">
       <h3>FREE POUR</h3>
-      <h5>TODAY'S PRACTICE</h5>
+      <h5>{{ pageTitle }}</h5>
     </div>
     <div></div>
   </nav>
@@ -15,9 +15,14 @@
 
 <script>
 export default {
-  name: 'nav',
-  prop: {
-    state: String,
+  name: 'navigation',
+  props: {
+    page: String,
+  },
+  computed: {
+    pageTitle() {
+      return this.page === 'practice' ? "TODAY'S PRACTICE" : 'PERFORMANCE';
+    },
   },
 };
 </script>
@@ -25,10 +30,11 @@ export default {
 <style lang="scss" scoped>
 nav {
   display: flex;
+  margin-bottom: 50px;
   > div {
     min-width: 25px;
   }
-  
+
   > div:first-child {
     display: flex;
     align-items: center;
