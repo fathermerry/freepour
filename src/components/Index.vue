@@ -1,8 +1,8 @@
 <template>
   <div class="frame">
     <div class="title">
-      <h1>Free Pour</h1>
-      <h3>Practice App</h3>
+      <h1>FREE POUR</h1>
+      <h3>PRACTICE APP</h3>
     </div>
     <div class="pattern"></div>
     <div class="actions">
@@ -15,7 +15,6 @@
 <script>
 export default {
   name: 'Index',
-  data() {},
   methods: {
     next(state) {
       this.$emit('next', state);
@@ -38,8 +37,11 @@ export default {
 }
 
 .title {
-  position: relative;
-  top: 150px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  top: 100px;
   h1 {
     font-style: normal;
     font-weight: 500;
@@ -66,8 +68,11 @@ export default {
 }
 
 .actions {
-  position: relative;
-  top: 350px;
+  position: absolute;
+  left: 0;
+  right: 0;
+  margin: 0 auto;
+  bottom: 100px;
 
   a {
     font-style: normal;

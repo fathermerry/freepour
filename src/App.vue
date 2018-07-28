@@ -2,17 +2,20 @@
   <div class="app" id="app">
     <div class="pattern pattern-on-top"></div>
     <div class="pattern pattern-at-bottom"></div>
-    <index v-if="state === 'index'" @next="changeState" />
-    <div v-else>
-      <nav :state="state" />
-      <practice v-if="state === 'practice'" @back="changeState('index')" />
-      <performance v-if="state === 'performance'" @back="changeState('index')" />
-    </div>
+    <transition name="fade">
+      <index v-if="state === 'index'" @next="changeState" />
+      <div class="content" v-else>
+        <navigation :state="state" @back="changeState('index')" />
+        <practice v-if="state === 'practice'" />
+        <performance v-if="state === 'performance'" />
+      </div>
+    </transition>
   </div>
 </template>
 
 <script>
 import Index from './components/Index';
+import Navigation from './components/Nav';
 import Practice from './components/Practice';
 import Performance from './components/Performance';
 
@@ -20,6 +23,7 @@ export default {
   name: 'App',
   components: {
     Index,
+    Navigation,
     Practice,
     Performance,
   },
@@ -62,6 +66,7 @@ body, html {
   position: absolute;
   background: url('./assets/japanese-pattern-dark.png');
   background-repeat: no-repeat;
+  background-size: 100% auto;
   width: 100%;
   height: 80px;
 
@@ -72,6 +77,19 @@ body, html {
   &-at-bottom {
     bottom: 0;
   }
+}
+
+.content {
+  padding: 35px;
+  position: relative;
+  z-index: 2;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>
 
