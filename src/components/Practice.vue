@@ -3,40 +3,40 @@
     <div class="practice-column" id="left">
       <div class="header">
         <div class="header-title">LEFT <br> HAND</div>
-        <div class="header-pool">{{ logs.left.pool }}</div>
+        <div class="header-pool">{{ log.left.pool }}</div>
       </div>
       <div class="counts">
         <a class="count" @click="record('left', 'overpoured')">
           <div class="count-title">Over Poured</div>
-          <div class="count-amount">{{ logs.left.counts.overpoured }}</div>
+          <div class="count-amount">{{ log.left.counts.overpoured }}</div>
         </a>
         <a class="count" @click="record('left', 'underpoured')">
           <div class="count-title">Under Poured</div>
-          <div class="count-amount">{{ logs.left.counts.underpoured }}</div>
+          <div class="count-amount">{{ log.left.counts.underpoured }}</div>
         </a>
         <a class="count" @click="record('left', 'correctpour')">
           <div class="count-title">Correct Pour</div>
-          <div class="count-amount">{{ logs.left.counts.correctpour }}</div>
+          <div class="count-amount">{{ log.left.counts.correctpour }}</div>
         </a>
       </div>
     </div>
     <div class="practice-column" id="right">
       <div class="header">
         <div class="header-title">RIGHT <br> HAND</div>
-        <div class="header-pool">{{ logs.right.pool }}</div>
+        <div class="header-pool">{{ log.right.pool }}</div>
       </div>
       <div class="counts">
         <a class="count" @click="record('right', 'overpoured')">
           <div class="count-title">Over Poured</div>
-          <div class="count-amount">{{ logs.right.counts.overpoured }}</div>
+          <div class="count-amount">{{ log.right.counts.overpoured }}</div>
         </a>
         <a class="count" @click="record('right', 'underpoured')">
           <div class="count-title">Under Poured</div>
-          <div class="count-amount">{{ logs.right.counts.underpoured }}</div>
+          <div class="count-amount">{{ log.right.counts.underpoured }}</div>
         </a>
         <a class="count" @click="record('right', 'correctpour')">
           <div class="count-title">Correct Pour</div>
-          <div class="count-amount">{{ logs.right.counts.correctpour }}</div>
+          <div class="count-amount">{{ log.right.counts.correctpour }}</div>
         </a>
       </div>
     </div>
@@ -47,41 +47,39 @@
 export default {
   name: 'Practice',
   data() {
-    const today = `logs_${Date.now()}`;
-    function newLog() {
-      return {
-        left: {
-          pool: 50,
-          counts: {
-            overpoured: 0,
-            underpoured: 0,
-            correctpour: 0,
-          },
+    const [today] = new Date().toLocaleString('en-US').split(', ');
+    const log = localStorage.getItem(today) ? JSON.parse(localStorage.getItem(today)) : {
+      tries: 0,
+      left: {
+        pool: 50,
+        counts: {
+          overpoured: 0,
+          underpoured: 0,
+          correctpour: 0,
         },
-        right: {
-          pool: 50,
-          counts: {
-            overpoured: 0,
-            underpoured: 0,
-            correctpour: 0,
-          },
+      },
+      right: {
+        pool: 50,
+        counts: {
+          overpoured: 0,
+          underpoured: 0,
+          correctpour: 0,
         },
-      };
-    }
-
-    const logs = localStorage.getItem(today) ? JSON.parse(localStorage.getItem(today)) : newLog();
+      },
+    };
 
     return {
       today,
-      logs,
+      log,
     };
   },
   methods: {
     record(hand, type) {
-      if (!this.logs[hand].pool) return;
-      this.logs[hand].pool -= 1;
-      this.logs[hand].counts[type] += 1;
-      localStorage.setItem(this.today, {});
+      if (!this.log[hand].pool) return;
+      this.log[hand].pool -= 1;
+      this.log[hand].counts[type] += 1;
+      this.log.tries += 1;
+      localStorage.setItem(this.today, JSON.stringify(this.log));
     },
   },
 };

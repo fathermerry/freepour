@@ -6,7 +6,9 @@
     </div>
     <div class="pattern"></div>
     <div class="actions">
-      <a href="#" @click.prevent="next('practice')">Start Practice</a>
+      <a href="#" @click.prevent="next('practice')">
+        {{ this.log ? 'Continue' : 'Start' }} Practice
+      </a>
       <a href="#" @click.prevent="next('performance')">View Perfomance</a>
     </div>
   </div>
@@ -15,6 +17,13 @@
 <script>
 export default {
   name: 'Index',
+  data() {
+    const [today] = new Date().toLocaleString('en-US').split(', ');
+    const log = localStorage.getItem(today);
+    return {
+      log,
+    };
+  },
   methods: {
     next(state) {
       this.$emit('next', state);
