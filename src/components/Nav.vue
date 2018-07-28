@@ -30,7 +30,7 @@ export default {
 <style lang="scss" scoped>
 nav {
   display: flex;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   > div {
     min-width: 25px;
   }
