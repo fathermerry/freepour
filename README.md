@@ -1,6 +1,6 @@
 # freepour
 
-> Simple web app to track improvement at free pouring
+Simple web app to track improvement at free pouring. It's built with Vue JS.
 
 ## Build Setup
 
